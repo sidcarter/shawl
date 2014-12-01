@@ -16,7 +16,7 @@ object Shawl extends App {
 	agent.setUserAgent("Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36")
 			
 	val page:AbstractDocument  = agent.get("https://www.schwab.com/public/schwab/client_home")
-	println(page)
+//	println(page)
 	
 	val form = page.form("SignonForm")
 
@@ -24,7 +24,7 @@ object Shawl extends App {
 	form.get("SignonPassword").set(password)
 	val response:AbstractDocument= form.submit()
 	
-	println(response)
+//	println(response)
 	println(response.getUri())
 
 	if (response.getUri().endsWith("YES")) println("Authentication succeeded.")
@@ -38,8 +38,6 @@ object Shawl extends App {
 	val usernameField: String = "ctl00$WebPartManager1$CenterLogin$LoginUserControlId$txtLoginID"
 	val response:AbstractDocument= form.submit()
 	val action = page.action("https://client.schwab.com/Login/SignOn/signon.ashx")
-	
-
 
 	println(form.elements())
 	*/
