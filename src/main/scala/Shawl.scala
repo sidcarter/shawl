@@ -11,9 +11,10 @@ object Shawl extends App {
 	
 	val username = readLine("username: ")
 	val password = readLine("password: ")
+	var userAgent = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36"
 	
 	val agent= new MechanizeAgent()
-	agent.setUserAgent("Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36")
+	agent.setUserAgent(userAgent)
 			
 	val page:AbstractDocument  = agent.get("https://www.schwab.com/public/schwab/client_home")
 //	println(page)
@@ -23,13 +24,21 @@ object Shawl extends App {
 	form.get("SignonAccountNumber").set(username)
 	form.get("SignonPassword").set(password)
 	val response:AbstractDocument= form.submit()
-	
-//	println(response)
-	println(response.getUri())
 
-	if (response.getUri().endsWith("YES")) println("Authentication succeeded.")
+	if (response.getUri().endsWith("YES")) {
+		println("Authentication succeeded.") 
+		val cookieStore = response.getAgent().cookies().getAll()
+		println(cookieStore.getClass())
+
+//		val reAgent = new MechanizeAgent()
+//		reAgent.setUserAgent(userAgent)
+//		reAgent.get(response.getUri())
+	}
+	// /Accounts/Summary/Summary.aspx?ShowUN=YES
 	else if (response.getUri().endsWith("ErrorInvalidCredentials")) println("Authentication failed.")
-	else println("Unknown authentication error.")
+	// /Login/SignOn/CustomerCenterLogin.aspx?ErrorCode=ErrorInvalidCredentials
+	else println("Unknown authentication error.") 
+	// /Login/SignOn/CustomerCenterLogin.aspx?ErrorCode=Login-Error-DWTThirdAttemptFailed
 		
 	/**
 	println(form)
