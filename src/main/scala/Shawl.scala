@@ -1,4 +1,5 @@
 import scala.io.StdIn._
+import scala.collection.convert.wrapAsScala._
 
 import com.gistlabs.mechanize.Mechanize
 import com.gistlabs.mechanize.headers.Headers
@@ -28,7 +29,7 @@ object Shawl extends App {
 	if (response.getUri().endsWith("YES")) {
 		println("Authentication succeeded.") 
 		val cookieStore = response.getAgent().cookies().getAll()
-		println(cookieStore.getClass())
+		cookieStore.foreach {println}
 
 //		val reAgent = new MechanizeAgent()
 //		reAgent.setUserAgent(userAgent)
