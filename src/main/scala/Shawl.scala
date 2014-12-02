@@ -29,7 +29,11 @@ object Shawl extends App {
 	if (response.getUri().endsWith("YES")) {
 		println("Authentication succeeded.") 
 		val cookieStore = response.getAgent().cookies().getAll()
-		cookieStore.foreach {println}
+		for (cookie <- cookieStore if cookie.getDomain().startsWith("client")) {
+			println (s"Name: ${cookie.getName()}")
+			println (s"Domain: ${cookie.getDomain()}")
+			println (s"Value: ${cookie.getValue()}")
+		}
 
 //		val reAgent = new MechanizeAgent()
 //		reAgent.setUserAgent(userAgent)
