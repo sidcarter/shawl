@@ -4,7 +4,7 @@ version := "0.1"
 	
 organization := "cn.org.sidcarter"
 	
-scalaVersion := "2.11.4"
+scalaVersion := "2.11.6"
 
 // append -deprecation to the options passed to the Scala compiler
 scalacOptions += "-deprecation"
