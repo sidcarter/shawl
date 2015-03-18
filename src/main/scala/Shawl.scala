@@ -8,18 +8,17 @@ import com.gistlabs.mechanize.document.html.form.Form
 import com.gistlabs.mechanize.impl.MechanizeAgent
 
 object Shawl extends App {
-	
 	val cloth = new Wool()
-	
+
 	val username = cloth.getUsername("username: ")
 	val password = cloth.getPassword("password: ")
-	
+
 	val agent= new MechanizeAgent()
 	agent.setUserAgent(cloth.userAgent)
-			
-	val page:AbstractDocument  = agent.get("https://www.schwab.com/public/schwab/client_home")
+		
+	val page:AbstractDocument  = agent.get(cloth.schwabThread)
 //	println(page)
-	
+
 	val form = page.form("SignonForm")
 
 	form.get("SignonAccountNumber").set(username)
@@ -27,7 +26,7 @@ object Shawl extends App {
 	val response:AbstractDocument= form.submit()
 
 	println(response) // for debug
-	
+
 	if (response.getUri().endsWith("YES")) {
 		println("Authentication succeeded.") 
 		val cookieStore = response.getAgent().cookies().getAll()
@@ -47,7 +46,7 @@ object Shawl extends App {
 	// /Login/SignOn/CustomerCenterLogin.aspx?ErrorCode=ErrorInvalidCredentials
 	else println("Unknown authentication error.") 
 	// /Login/SignOn/CustomerCenterLogin.aspx?ErrorCode=Login-Error-DWTThirdAttemptFailed
-		
+	
 	/**
 	println(form)
 	println(response.getTitle())
