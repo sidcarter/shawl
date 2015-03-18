@@ -1,4 +1,3 @@
-import scala.io.StdIn._
 import scala.collection.convert.wrapAsScala._
 
 import com.gistlabs.mechanize.Mechanize
@@ -10,13 +9,13 @@ import com.gistlabs.mechanize.impl.MechanizeAgent
 
 object Shawl extends App {
 	
-	val username = readLine("username: ")
-	val tmp_pass = System.console.readPassword("password: ")
-	val password = new String(tmp_pass)
-	var userAgent = "Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36"
+	val cloth = new Wool()
+	
+	val username = cloth.getUsername("username: ")
+	val password = cloth.getPassword("password: ")
 	
 	val agent= new MechanizeAgent()
-	agent.setUserAgent(userAgent)
+	agent.setUserAgent(cloth.userAgent)
 			
 	val page:AbstractDocument  = agent.get("https://www.schwab.com/public/schwab/client_home")
 //	println(page)
@@ -27,13 +26,16 @@ object Shawl extends App {
 	form.get("SignonPassword").set(password)
 	val response:AbstractDocument= form.submit()
 
+	println(response) // for debug
+	
 	if (response.getUri().endsWith("YES")) {
 		println("Authentication succeeded.") 
 		val cookieStore = response.getAgent().cookies().getAll()
 		for (cookie <- cookieStore if cookie.getDomain().startsWith("client")) {
+			cloth.cookie = (cookie.getValue())
 			println (s"Name: ${cookie.getName()}")
 			println (s"Domain: ${cookie.getDomain()}")
-			println (s"Value: ${cookie.getValue()}")
+			println (s"Value: ${cloth.cookie}")
 		}
 
 //		val reAgent = new MechanizeAgent()
